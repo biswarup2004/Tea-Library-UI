@@ -1,76 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁 | My Profile</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                        secondary: '#f59e0b',
+                        accent: '#ec4899',
+                        dark: '#1f2937',
+                        light: '#f8fafc',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply bg-white/90 backdrop-blur-md border border-white/20;
+            }
+            .glass-dark {
+                @apply bg-black/80 backdrop-blur-md border border-white/10 text-white;
+            }
+            .btn {
+                @apply px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 transform hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-primary/20;
+            }
+            .btn-primary {
+                @apply bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-primary/40;
+            }
+            .btn-outline {
+                @apply border-2 border-primary text-gray-800 hover:bg-primary/5;
+            }
+            .section-title {
+                @apply text-4xl font-extrabold text-center text-gray-800 mb-12 relative;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="logo">𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁</div>
-            
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Clothing</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Accessories</a></li>
-            </ul>
-            
-            <div class="nav-actions">
-                <div class="cart-icon" onclick="window.location.href='cart.html'">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">0</span>
+    <header class="fixed w-full top-0 z-50 glass shadow-sm transition-all duration-300" id="header">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center max-w-7xl">
+            <div class="logo font-extrabold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent cursor-pointer"
+                onclick="window.location.href='index.html'">
+                𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁
+            </div>
+
+            <div class="hidden lg:flex items-center gap-8 font-medium text-gray-600">
+                <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                <a href="index.html#tea-products" class="hover:text-primary transition-colors">Tea</a>
+                <a href="index.html#coffee-products" class="hover:text-primary transition-colors">Coffee</a>
+                <a href="index.html#chips-products" class="hover:text-primary transition-colors">Snacks</a>
+                <a href="index.html#colddrinks-products" class="hover:text-primary transition-colors">Beverages</a>
+                <a href="index.html#dryfruits-products" class="hover:text-primary transition-colors">Dry Fruits</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" id="search-input" placeholder="Search..."
+                        class="pl-4 pr-10 py-2 rounded-full border border-gray-200 bg-gray-100 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all w-64 text-sm">
+                    <button onclick="searchProducts()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                
-                <div class="auth-buttons" id="auth-buttons">
-                    <button class="btn btn-outline" onclick="showModal('signin')">Sign In</button>
-                    <button class="btn btn-primary" onclick="showModal('signup')">Sign Up</button>
-                </div>
-                
-                <div class="user-menu" id="user-menu" style="display: none;">
-                    <div class="user-profile-dropdown" onclick="toggleUserDropdown()">
-                        <div class="user-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <span id="user-name">Welcome User!</span>
-                        <i class="fas fa-chevron-down" id="dropdown-arrow"></i>
+
+                <button class="lg:hidden text-xl text-gray-600 hover:text-primary mobile-search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <div class="relative cursor-pointer group" onclick="window.location.href='cart.html'">
+                    <div class="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
                     </div>
-                    <div class="user-dropdown" id="user-dropdown">
-                        <div class="user-info">
-                            <div class="avatar-large">
+                    <span
+                        class="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white"
+                        id="cart-count">0</span>
+                </div>
+
+                <div class="auth-buttons flex gap-3" id="auth-buttons">
+                    <button
+                        class="hidden sm:flex px-5 py-2 rounded-full border border-gray-200 font-semibold hover:border-primary hover:text-primary transition-all text-sm"
+                        onclick="showModal('signin')">Sign In</button>
+                    <button
+                        class="px-5 py-2 rounded-full bg-primary text-white font-semibold hover:bg-primary-dark shadow-md hover:shadow-lg transition-all text-sm"
+                        onclick="showModal('signup')">Sign Up</button>
+                </div>
+
+                <div class="hidden lg:block">
+                    <div class="user-menu hidden relative" id="user-menu">
+                        <div class="user-profile-dropdown flex items-center gap-2 cursor-pointer p-1 pr-3 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all"
+                            onclick="toggleUserDropdown()">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-sm shadow-md">
                                 <i class="fas fa-user"></i>
                             </div>
-                            <div class="user-details">
-                                <h4 id="profile-name">User Name</h4>
-                                <p id="profile-email">user@email.com</p>
-                                <p class="member-since">Member since 2024</p>
-                            </div>
+                            <span id="user-name" class="font-semibold text-sm hidden sm:block">User</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <ul class="dropdown-menu">
-                            <li onclick="window.location.href='profile.html'">
-                                <i class="fas fa-user-edit"></i> View Profile
-                            </li>
-                            <li onclick="window.location.href='orders.html'">
-                                <i class="fas fa-shopping-bag"></i> My Orders
-                            </li>
-                            <li onclick="window.location.href='cart.html'">
-                                <i class="fas fa-shopping-cart"></i> My Cart
-                            </li>
-                            <li onclick="showSettings()">
-                                <i class="fas fa-cog"></i> Settings
-                            </li>
-                            <li class="logout-item" onclick="logout()">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </li>
-                        </ul>
+
+                        <div class="user-dropdown absolute right-0 top-full mt-4 w-72 glass rounded-2xl shadow-xl transform origin-top-right transition-all duration-200 opacity-0 invisible translate-y-2 z-50"
+                            id="user-dropdown">
+                            <div class="p-6 border-b border-gray-100">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xl shadow-lg">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 id="profile-name" class="font-bold text-gray-800">User Name</h4>
+                                        <p id="profile-email" class="text-xs text-gray-500 truncate w-32">user@email.com
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="py-2">
+                                <li><a href="#" onclick="window.location.href='profile.html'"
+                                        class="block px-6 py-3 hover:bg-primary/5 text-gray-600 hover:text-primary transition-colors flex items-center gap-3"><i
+                                            class="fas fa-user-edit w-5"></i> View Profile</a></li>
+                                <li><a href="#" onclick="window.location.href='orders.html'"
+                                        class="block px-6 py-3 hover:bg-primary/5 text-gray-600 hover:text-primary transition-colors flex items-center gap-3"><i
+                                            class="fas fa-shopping-bag w-5"></i> My Orders</a></li>
+                                <li><a href="#" onclick="window.location.href='cart.html'"
+                                        class="block px-6 py-3 hover:bg-primary/5 text-gray-600 hover:text-primary transition-colors flex items-center gap-3"><i
+                                            class="fas fa-shopping-cart w-5"></i> My Cart</a></li>
+                                <li><a href="#" onclick="logout()"
+                                        class="block px-6 py-3 hover:bg-red-50 text-red-500 transition-colors flex items-center gap-3 border-t border-gray-100 mt-2"><i
+                                            class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <button class="lg:hidden text-2xl text-gray-600 p-2 mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </nav>
     </header>
@@ -79,9 +160,9 @@
     <div class="cart-container">
         <div class="container">
             <h2 class="section-title">My Profile</h2>
-             <button class="back-button" onclick="goBack()">
-            <i class="fas fa-arrow-left"></i> Back to Home
-        </button>
+            <button class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </button>
             <div class="profile-container">
                 <div class="profile-card">
                     <div class="profile-header">
@@ -97,7 +178,7 @@
                             <i class="fas fa-edit"></i> Edit Profile
                         </button>
                     </div>
-                    
+
                     <div class="profile-stats">
                         <div class="stat-item">
                             <div class="stat-number" id="total-orders">0</div>
@@ -143,7 +224,8 @@
                         <div class="detail-section">
                             <h3>Recent Activity</h3>
                             <div class="activity-list">
-                                <p style="color: white; text-align: center;" id="activity-message">Loading activity...</p>
+                                <p style="color: white; text-align: center;" id="activity-message">Loading activity...
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -174,7 +256,8 @@
                 </button>
             </form>
             <p style="text-align: center; margin-top: 1rem;">
-                Don't have an account? <a href="#" onclick="closeModal('signin'); showModal('signup');" style="color: var(--primary);">Sign up</a>
+                Don't have an account? <a href="#" onclick="closeModal('signin'); showModal('signup');"
+                    style="color: var(--primary);">Sign up</a>
             </p>
         </div>
     </div>
@@ -205,8 +288,86 @@
                 </button>
             </form>
             <p style="text-align: center; margin-top: 1rem;">
-                Already have an account? <a href="#" onclick="closeModal('signup'); showModal('signin');" style="color: var(--primary);">Sign in</a>
+                Already have an account? <a href="#" onclick="closeModal('signup'); showModal('signin');"
+                    style="color: var(--primary);">Sign in</a>
             </p>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm opacity-0 invisible transition-all duration-300 mobile-menu-overlay"
+        id="mobile-menu-overlay"></div>
+    <div class="fixed inset-y-0 left-0 w-[280px] bg-white shadow-2xl z-[70] transform -translate-x-full transition-transform duration-300 flex flex-col h-full"
+        id="mobile-menu">
+        <div class="p-6 flex justify-between items-center border-b border-gray-100 bg-white">
+            <span
+                class="font-extrabold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">𝗕𝗶𝘁𝘆
+                𝗞𝗮𝗿𝘁</span>
+            <button class="text-gray-400 hover:text-red-500 text-xl transition-colors close-menu-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-6 flex flex-col gap-1 overflow-y-auto flex-1">
+            <a href="index.html"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Home <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="index.html#tea-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Tea <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="index.html#coffee-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Coffee <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="index.html#chips-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Snacks <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="index.html#colddrinks-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Beverages <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="index.html#dryfruits-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Dry Fruits <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+
+            <div id="mobile-user-menu" class="hidden mt-6 pt-6 border-t border-gray-100">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">My Account</p>
+                <a href="profile.html"
+                    class="flex items-center gap-3 text-lg font-medium text-gray-700 hover:text-primary py-3 rounded-xl hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center"><i
+                            class="fas fa-user text-sm"></i></div>
+                    Profile
+                </a>
+                <a href="orders.html"
+                    class="flex items-center gap-3 text-lg font-medium text-gray-700 hover:text-primary py-3 rounded-xl hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center"><i
+                            class="fas fa-shopping-bag text-sm"></i></div>
+                    My Orders
+                </a>
+                <a href="cart.html"
+                    class="flex items-center gap-3 text-lg font-medium text-gray-700 hover:text-primary py-3 rounded-xl hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center"><i
+                            class="fas fa-shopping-cart text-sm"></i></div>
+                    My Cart
+                </a>
+                <a href="#" onclick="logout()"
+                    class="flex items-center gap-3 text-lg font-medium text-red-500 hover:text-red-600 py-3 rounded-xl hover:bg-red-50 px-2 -mx-2 transition-colors mt-2">
+                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center"><i
+                            class="fas fa-sign-out-alt text-sm"></i></div>
+                    Logout
+                </a>
+            </div>
+
+            <div id="mobile-auth-buttons" class="mt-auto pt-6 border-t border-gray-100 flex flex-col gap-3 pb-8">
+                <button
+                    class="w-full py-3 rounded-xl border border-gray-200 font-bold text-gray-700 hover:border-primary hover:text-primary transition-all"
+                    onclick="showModal('signin')">Sign In</button>
+                <button
+                    class="w-full py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark shadow-lg shadow-primary/30 transition-all"
+                    onclick="showModal('signup')">Sign Up</button>
+            </div>
         </div>
     </div>
 
@@ -214,75 +375,56 @@
     <script src="js/main.js"></script>
     <script src="js/cart.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             updateCartCount();
             updateAuthUI();
-            loadProfileData();
-        });
 
-        async function loadProfileData() {
+            // Check if user is logged in
             const currentUser = JSON.parse(localStorage.getItem("currentUser"));
             if (!currentUser) {
                 window.location.href = "index.html";
                 return;
             }
 
-            try {
-                const user = await getUserProfile();
-                updateProfileInfo(user);
-                updateProfileStats();
-            } catch (error) {
-                console.error('Error loading profile:', error);
-                showNotification('Failed to load profile data');
-            }
-        }
-
-        function updateProfileStats() {
-            // Update cart items count
-            const cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            document.getElementById('cart-items-count').textContent = totalItems;
-
-            // You can fetch actual order stats from backend here
-            // For now, using placeholders
-            document.getElementById('total-orders').textContent = '0';
-            document.getElementById('total-spent').textContent = '₹0';
-        }
+            // Use the shared function from main.js which has better error handling
+            loadUserProfile();
+        });
 
         function editProfile() {
             showNotification('Edit profile functionality coming soon!');
         }
     </script>
     <script>
-function goBack() {
-    // Use history back or navigate to home
-    if (history.length > 1) {
-        history.back();
-    } else {
-        window.location.href = 'index.html';
-    }
-}
+        function goBack() {
+            // Use history back or navigate to home
+            if (history.length > 1) {
+                history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
 
-// Handle escape key for back navigation
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        goBack();
-    }
-});
+        // Handle escape key for back navigation
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
 
-// Also update the existing DOMContentLoaded function in each file:
-document.addEventListener("DOMContentLoaded", function() {
-    updateCartCount();
-    updateAuthUI();
-    // ... other existing code ...
-    
-    // Add this to ensure back button works
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (!currentUser && (window.location.pathname.includes('profile.html') || 
-                         window.location.pathname.includes('orders.html'))) {
-        window.location.href = 'index.html';
-    }
-});
-</script>
+        // Also update the existing DOMContentLoaded function in each file:
+        document.addEventListener("DOMContentLoaded", function () {
+            updateCartCount();
+            updateAuthUI();
+            // ... other existing code ...
+
+            // Add this to ensure back button works
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser && (window.location.pathname.includes('profile.html') ||
+                window.location.pathname.includes('orders.html'))) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
 </body>
+
 </html>

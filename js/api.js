@@ -3,12 +3,12 @@ function getAuthHeaders() {
     const token = localStorage.getItem('token');
     const headers = {
         'Content-Type': 'application/json'
-    }; 
-    
+    };
+
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
     }
-    
+
     return headers;
 }
 
@@ -22,7 +22,7 @@ async function registerUser(userData) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(userData)
-            
+
         });
 
         if (!response.ok) {
@@ -68,7 +68,7 @@ async function getUserProfile() {
         }
 
         console.log('Fetching user profile...');
-        
+
         const response = await fetch(`${BASE_URL}/users/validate`, {
             method: 'GET',
             headers: getAuthHeaders()
@@ -90,7 +90,7 @@ async function placeOrder(orderData) {
     try {
         const token = localStorage.getItem('token');
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
+
         if (!token || !currentUser) {
             throw new Error('User not authenticated. Please sign in again.');
         }
@@ -124,7 +124,7 @@ async function getUserOrders() {
     try {
         const token = localStorage.getItem('token');
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
+
         if (!token || !currentUser) {
             throw new Error('User not authenticated. Please sign in again.');
         }
@@ -157,17 +157,17 @@ async function getUserOrders() {
         return orders;
     } catch (error) {
         console.error('Get user orders error:', error);
-        
+
         // If authentication fails, clear storage and notify
-        if (error.message.includes('Session expired') || 
-            error.message.includes('401') || 
+        if (error.message.includes('Session expired') ||
+            error.message.includes('401') ||
             error.message.includes('403')) {
             showNotification('Session expired. Please sign in again.');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 2000);
         }
-        
+
         throw error;
     }
 }
@@ -205,11 +205,11 @@ async function loadProducts() {
     try {
         console.log('Fetching products from:', `${BASE_URL}/products`);
         const response = await fetch(`${BASE_URL}/products`);
-        
+
         if (!response.ok) {
             throw new Error('Failed to load products');
         }
-        
+
         const products = await response.json();
         console.log('Products loaded:', products.length);
 
@@ -238,35 +238,49 @@ async function loadProducts() {
         function createProductCard(product) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let cartItem = cart.find(item => item.id === product.id);
-            
+
             let buttonContent = '';
             if (cartItem && cartItem.quantity > 0) {
                 buttonContent = `
-                    <div class="quantity-controls">
-                        <button class="btn-quantity" onclick="event.stopPropagation(); decrementCart(${product.id})">−</button>
-                        <span class="quantity-display">${cartItem.quantity}</span>
-                        <button class="btn-quantity" onclick="event.stopPropagation(); incrementCart(${product.id})">+</button>
+                    <div class="flex items-center justify-between w-full h-full gap-3 quantity-controls">
+                        <div class="w-6 h-6 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 flex items-center justify-center cursor-pointer transition-colors btn-quantity" onclick="event.stopPropagation(); decrementCart(${product.id})">−</div>
+                        <span class="font-bold text-gray-800 quantity-display">${cartItem.quantity}</span>
+                        <div class="w-6 h-6 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 flex items-center justify-center cursor-pointer transition-colors btn-quantity" onclick="event.stopPropagation(); incrementCart(${product.id})">+</div>
                     </div>
                 `;
             } else {
                 buttonContent = `<i class="fas fa-plus"></i> Add to Cart`;
             }
-            
+
             return `
-            <div class="product-card">
-                <img src="${product.imageUrl}" class="product-image" alt="${product.name}">
-                <div class="product-info">
-                    <h3 class="product-title">${product.name}</h3>
-                    <p class="product-description">${product.description}</p>
-                    <div class="product-bottom-section">
-                        <div class="product-price">₹${product.price}</div>
-                        <button class="add-to-cart" data-product-id="${product.id}" onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.imageUrl}')">
+            <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 flex flex-col h-full group product-card">
+                <div class="relative overflow-hidden bg-gray-50 h-56 p-6">
+                    <img src="${product.imageUrl}" class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500 product-image" alt="${product.name}">
+                </div>
+                <div class="p-6 flex flex-col flex-1 product-info">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-bold text-gray-800 leading-tight product-title">${product.name}</h3>
+                        <div class="flex gap-1 text-yellow-400 text-xs">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-4 flex-1 line-clamp-2 product-description">${product.description}</p>
+                    <div class="flex justify-between items-center mt-auto gap-4 product-bottom-section">
+                        <div class="text-2xl font-black text-gray-900 product-price">₹${product.price}</div>
+                        <button class="add-to-cart px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 min-w-[110px] ${cartItem && cartItem.quantity > 0 ? 'bg-gray-100 text-gray-800' : 'bg-primary text-white hover:bg-primary-dark hover:shadow-primary/30'}" 
+                            data-product-id="${product.id}" 
+                            onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.imageUrl}')">
                             ${buttonContent}
                         </button>
                     </div>
                 </div>
             </div>
             `;
+
         }
 
         products.forEach((product) => {

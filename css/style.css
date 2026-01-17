@@ -1,5 +1,3 @@
-/* [file name]: style.css */
-/* [file content begin] */
 * {
     margin: 0;
     padding: 0;
@@ -59,7 +57,7 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     padding-bottom: 15px;
-    
+
 }
 
 .nav-links {
@@ -99,7 +97,7 @@ body {
     border: 2px solid #e5e7eb;
     border-radius: 25px;
     width: 300px;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
     transition: all 0.3s ease;
 }
@@ -483,7 +481,7 @@ body {
     margin-top: 0;
     padding: 4rem 2rem;
     text-align: center;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     backdrop-filter: blur(10px);
 }
 
@@ -492,12 +490,12 @@ body {
     font-weight: 900;
     color: white;
     margin-bottom: 1rem;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .hero p {
     font-size: 1.25rem;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 2rem;
     max-width: 600px;
     margin-left: auto;
@@ -527,7 +525,7 @@ body {
     text-align: center;
     color: white;
     margin-bottom: 3rem;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .products-grid {
@@ -1077,29 +1075,60 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @keyframes slideInRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 @keyframes slideOutRight {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
 }
 
 /* Page States */
@@ -1265,7 +1294,7 @@ body {
     background: rgba(99, 102, 241, 0.1);
 }
 
-.payment-option input[type="radio"]:checked + label {
+.payment-option input[type="radio"]:checked+label {
     background: rgba(99, 102, 241, 0.1);
     border-color: var(--primary);
     color: var(--primary);
@@ -1404,16 +1433,16 @@ body {
     .nav {
         padding: 1rem;
     }
-    
+
     /* Show mobile menu button */
     .mobile-menu-btn {
         display: block;
     }
-    
+
     .mobile-search-btn {
         display: block;
     }
-    
+
     /* Hide desktop navigation */
     .nav-links {
         position: fixed;
@@ -1433,129 +1462,129 @@ body {
         max-height: calc(100vh - 70px);
         overflow-y: auto;
     }
-    
+
     /* Show navigation when active */
     .nav-links.mobile-active {
         transform: translateX(0);
         opacity: 1;
         visibility: visible;
     }
-    
+
     .nav-links li {
         width: 100%;
         text-align: center;
     }
-    
+
     .nav-links a {
         display: block;
         padding: 1rem 2rem;
         width: 100%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
-    
+
     /* Hide desktop search */
     .search-container {
         display: none !important;
     }
-    
+
     /* Adjust nav actions for mobile */
     .nav-actions {
         gap: 0.5rem;
     }
-    
+
     /* Show auth buttons on mobile */
     .auth-buttons {
         display: flex !important;
         flex-direction: row;
         gap: 0.5rem;
     }
-    
+
     /* Adjust button size for mobile */
     .auth-buttons .btn {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
     }
-    
+
     /* User menu adjustments for mobile */
     .user-menu {
         display: block !important;
     }
-    
+
     .user-profile-dropdown {
         padding: 0.4rem 0.8rem;
     }
-    
+
     .user-profile-dropdown span {
         font-size: 0.85rem;
     }
-    
+
     .user-avatar {
         width: 28px;
         height: 28px;
         font-size: 0.8rem;
     }
-    
+
     .hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .products-grid {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1rem;
     }
-    
+
     .profile-header {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .order-items {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .cart-item {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .modal-content {
         margin: 1rem;
         padding: 1.5rem;
     }
-    
+
     .carousel-caption {
         left: 20px;
         right: 20px;
         bottom: 20px;
         padding: 1rem;
     }
-    
+
     .carousel-caption h2 {
         font-size: 1.5rem;
     }
-    
+
     .section-title {
         font-size: 2rem;
     }
-    
+
     .payment-card {
         padding: 1.5rem;
         margin: 0 1rem;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .payment-actions {
         flex-direction: column;
     }
-    
+
     .btn-large {
         min-width: auto;
     }
-    
+
     .success-actions {
         flex-direction: column;
     }
@@ -1565,22 +1594,22 @@ body {
     .nav {
         padding: 0.75rem 1rem;
     }
-    
+
     .logo {
         font-size: 1.5rem;
     }
-    
+
     .mobile-menu-btn,
     .mobile-search-btn {
         font-size: 1.2rem;
         padding: 0.4rem;
     }
-    
+
     .cart-icon {
         padding: 0.5rem;
         font-size: 0.9rem;
     }
-    
+
     .cart-badge {
         width: 16px;
         height: 16px;
@@ -1588,44 +1617,100 @@ body {
         top: -6px;
         right: -6px;
     }
-    
+
     .auth-buttons {
         gap: 0.25rem;
     }
-    
+
     .auth-buttons .btn {
         padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
     }
-    
+
     .nav-actions {
         gap: 0.5rem;
     }
-    
+
     .btn {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
     }
-    
+
     .hero h1 {
         font-size: 2rem;
     }
-    
+
     .hero p {
         font-size: 1rem;
     }
-    
+
     .products-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .product-bottom-section {
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
     }
-    
+
     .add-to-cart {
         width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Fix container padding on mobile */
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Fix Payment/Cart container spacing */
+    .cart-container {
+        margin-top: 90px;
+        padding: 1rem 0.5rem;
+    }
+
+    /* Fix Payment Card width */
+    .payment-card {
+        margin: 0;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    /* Fix Carousel Height */
+    .carousel-container {
+        height: 250px;
+        margin-top: 70px;
+    }
+
+    .carousel-slide img {
+        object-fit: cover;
+    }
+
+    /* Adjust Carousel Caption */
+    .carousel-caption {
+        left: 10px;
+        bottom: 10px;
+        max-width: 80%;
+        padding: 1rem;
+    }
+
+    .carousel-caption h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        display: none;
+        /* Hide description on very small screens if needed, or keep */
+    }
+
+    .carousel-caption .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
     }
 }

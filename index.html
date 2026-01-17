@@ -1,470 +1,564 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁 - Premium Tea Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
-      <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                        secondary: '#f59e0b',
+                        accent: '#ec4899',
+                        dark: '#1f2937',
+                        light: '#f8fafc',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply bg-white/90 backdrop-blur-md border border-white/20;
+            }
+            .glass-dark {
+                @apply bg-black/80 backdrop-blur-md border border-white/10 text-white;
+            }
+            .btn {
+                @apply px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 transform hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-primary/20;
+            }
+            .btn-primary {
+                @apply bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-primary/40;
+            }
+            .btn-outline {
+                @apply border-2 border-primary text-gray-800 hover:bg-primary/5;
+            }
+            .section-title {
+                @apply text-4xl font-extrabold text-center text-gray-800 mb-12 relative;
+            }
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="logo">𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁</div>
-            
-            <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <ul class="nav-links">
-                <li><a href="#" onclick="showPage('home')">Home</a></li>
-                <li><a href="#tea-products">Tea</a></li>
-                <li><a href="#coffee-products">Coffee</a></li>
-                <li><a href="#chips-products">Snacks</a></li>
-                <li><a href="#colddrinks-products">Beverages</a></li>
-                <li><a href="#dryfruits-products">Dry Fruits</a></li>
-            </ul>
-            
-            <div class="nav-actions">
-                <!-- Mobile Search Button -->
-                <button class="mobile-search-btn">
-                    <i class="fas fa-search"></i>
-                </button>
-                
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Search products...">
-                    <button onclick="searchProducts()">
+
+<body class="bg-gray-50 font-sans text-gray-800 antialiased selection:bg-primary/20 selection:text-primary">
+
+    <header class="fixed w-full top-0 z-50 glass shadow-sm transition-all duration-300" id="header">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center max-w-7xl">
+            <div class="logo font-extrabold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent cursor-pointer"
+                onclick="showPage('home')">
+                𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁
+            </div>
+
+            <div class="hidden lg:flex items-center gap-8 font-medium text-gray-600">
+                <a href="#" onclick="showPage('home')" class="hover:text-primary transition-colors">Home</a>
+                <a href="#tea-products" class="hover:text-primary transition-colors">Tea</a>
+                <a href="#coffee-products" class="hover:text-primary transition-colors">Coffee</a>
+                <a href="#chips-products" class="hover:text-primary transition-colors">Snacks</a>
+                <a href="#colddrinks-products" class="hover:text-primary transition-colors">Beverages</a>
+                <a href="#dryfruits-products" class="hover:text-primary transition-colors">Dry Fruits</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" id="search-input" placeholder="Search..."
+                        class="pl-4 pr-10 py-2 rounded-full border border-gray-200 bg-gray-100 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all w-64 text-sm">
+                    <button onclick="searchProducts()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                
-                <div class="cart-icon" onclick="showPage('cart')">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">0</span>
-                </div>
-                
-                <div class="auth-buttons" id="auth-buttons">
-                    <button class="btn btn-outline" onclick="showModal('signin')">Sign In</button>
-                    <button class="btn btn-primary" onclick="showModal('signup')">Sign Up</button>
-                </div>
-                
-                <div class="user-menu" id="user-menu" style="display: none;">
-                    <div class="user-profile-dropdown" onclick="toggleUserDropdown()">
-                        <div class="user-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <span id="user-name">Welcome, User!</span>
-                        <i class="fas fa-chevron-down" id="dropdown-arrow"></i>
+
+                <button class="lg:hidden text-xl text-gray-600 hover:text-primary mobile-search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <div class="relative cursor-pointer group" onclick="window.location.href='cart.html'">
+                    <div class="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
                     </div>
-                    <div class="user-dropdown" id="user-dropdown">
-                        <div class="user-info">
-                            <div class="avatar-large">
+                    <span
+                        class="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full border-2 border-white"
+                        id="cart-count">0</span>
+                </div>
+
+                <div class="auth-buttons flex gap-3" id="auth-buttons">
+                    <button
+                        class="hidden sm:flex px-5 py-2 rounded-full border border-gray-200 font-semibold hover:border-primary hover:text-primary transition-all text-sm"
+                        onclick="showModal('signin')">Sign In</button>
+                    <button
+                        class="px-5 py-2 rounded-full bg-primary text-white font-semibold hover:bg-primary-dark shadow-md hover:shadow-lg transition-all text-sm"
+                        onclick="showModal('signup')">Sign Up</button>
+                </div>
+
+                <div class="hidden lg:block">
+                    <div class="user-menu hidden relative" id="user-menu">
+                        <div class="user-profile-dropdown flex items-center gap-2 cursor-pointer p-1 pr-3 rounded-full hover:bg-gray-100 border border-transparent hover:border-gray-200 transition-all"
+                            onclick="toggleUserDropdown()">
+                            <div
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-sm shadow-md">
                                 <i class="fas fa-user"></i>
                             </div>
-                            <div class="user-details">
-                                <h4 id="profile-name">User Name</h4>
-                                <p id="profile-email">user@email.com</p>
-                                <p class="member-since">Member since 2024</p>
-                            </div>
+                            <span id="user-name" class="font-semibold text-sm hidden sm:block">User</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <ul class="dropdown-menu">
-                            <li onclick="showPage('profile')">
-                                <i class="fas fa-user-edit"></i> View Profile
-                            </li>
-                            <li onclick="showPage('orders')">
-                                <i class="fas fa-shopping-bag"></i> My Orders
-                            </li>
-                            <li onclick="showPage('cart')">
-                                <i class="fas fa-shopping-cart"></i> My Cart
-                            </li>
-                            <li onclick="showSettings()">
-                                <i class="fas fa-cog"></i> Settings
-                            </li>
-                            <li class="logout-item" onclick="logout()">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </li>
-                        </ul>
+
+                        <div class="user-dropdown absolute right-0 top-full mt-4 w-72 glass rounded-2xl shadow-xl transform origin-top-right transition-all duration-200 opacity-0 invisible translate-y-2 z-50"
+                            id="user-dropdown">
+                            <div class="p-6 border-b border-gray-100">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xl shadow-lg">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 id="profile-name" class="font-bold text-gray-800">User Name</h4>
+                                        <p id="profile-email" class="text-xs text-gray-500 truncate w-32">user@email.com
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="py-2">
+                                <li><a href="#" onclick="window.location.href='profile.html'"
+                                        class="block px-6 py-3 hover:bg-primary/5 text-gray-600 hover:text-primary transition-colors flex items-center gap-3"><i
+                                            class="fas fa-user-edit w-5"></i> View Profile</a></li>
+                                <li><a href="#" onclick="window.location.href='orders.html'"
+                                        class="block px-6 py-3 hover:bg-primary/5 text-gray-600 hover:text-primary transition-colors flex items-center gap-3"><i
+                                            class="fas fa-shopping-bag w-5"></i> My Orders</a></li>
+                                <li><a href="#" onclick="window.location.href='cart.html'"
+                                        class="block px-6 py-3 hover:bg-primary/5 text-gray-600 hover:text-primary transition-colors flex items-center gap-3"><i
+                                            class="fas fa-shopping-cart w-5"></i> My Cart</a></li>
+                                <li><a href="#" onclick="logout()"
+                                        class="block px-6 py-3 hover:bg-red-50 text-red-500 transition-colors flex items-center gap-3 border-t border-gray-100 mt-2"><i
+                                            class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <button class="lg:hidden text-2xl text-gray-600 p-2 mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </nav>
+
+
     </header>
 
-    <!-- Rest of your index.html content remains the same -->
-    <!-- Home Page -->
-    <div id="home" class="page active">
-        <!-- Hero Carousel -->
-        <div id="heroCarousel" class="carousel-container">
-            <div class="carousel-slides">
-                <div class="carousel-slide active">
-                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1200&h=400&fit=crop" alt="Tea Collection">
-                    <div class="carousel-caption">
-                        <h2>Premium Tea Collection</h2>
-                        <p>Discover finest teas from across India</p>
-                        <button class="btn btn-primary" onclick="document.querySelector('#tea-products').scrollIntoView({ behavior: 'smooth' })">Shop Tea</button>
+    <div id="home" class="page active pt-24 pb-12">
+        <div id="heroCarousel" class="relative w-full h-[500px] overflow-hidden group">
+            <div class="carousel-slides h-full relative">
+                <div class="carousel-slide absolute inset-0 active">
+                    <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1200&h=600&fit=crop"
+                        class="w-full h-full object-cover brightness-75" alt="Tea Collection">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white px-4 max-w-3xl animate-fade-in-up">
+                            <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Premium Tea Collection</h2>
+                            <p class="text-lg md:text-xl mb-8 font-light text-gray-100">Discover finest teas from across
+                                India selected by experts.</p>
+                            <button class="btn btn-primary mx-auto"
+                                onclick="document.querySelector('#tea-products').scrollIntoView({ behavior: 'smooth' })">Shop
+                                Tea Collection</button>
+                        </div>
                     </div>
                 </div>
-                <div class="carousel-slide">
-                    <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&h=400&fit=crop" alt="Coffee">
-                    <div class="carousel-caption">
-                        <h2>Aromatic Coffee Selection</h2>
-                        <p>Energize your mornings with premium coffee</p>
-                        <button class="btn btn-primary" onclick="document.querySelector('#coffee-products').scrollIntoView({ behavior: 'smooth' })">Shop Coffee</button>
+                <div class="carousel-slide absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&h=600&fit=crop"
+                        class="w-full h-full object-cover brightness-75" alt="Coffee">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white px-4 max-w-3xl">
+                            <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Aromatic Coffee</h2>
+                            <p class="text-lg md:text-xl mb-8 font-light text-gray-100">Energize your mornings with our
+                                premium coffee selection.</p>
+                            <button class="btn btn-primary mx-auto"
+                                onclick="document.querySelector('#coffee-products').scrollIntoView({ behavior: 'smooth' })">Shop
+                                Coffee</button>
+                        </div>
                     </div>
                 </div>
-                <div class="carousel-slide">
-                    <img src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=1200&h=400&fit=crop" alt="Healthy Snacks">
-                    <div class="carousel-caption">
-                        <h2>Snacks & Dry Fruits</h2>
-                        <p>Healthy and delicious snacking options</p>
-                        <button class="btn btn-primary" onclick="document.querySelector('#dryfruits-products').scrollIntoView({ behavior: 'smooth' })">Shop Snacks</button>
+                <div class="carousel-slide absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=1200&h=600&fit=crop"
+                        class="w-full h-full object-cover brightness-75" alt="Snacks">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white px-4 max-w-3xl">
+                            <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Healthy Snacks</h2>
+                            <p class="text-lg md:text-xl mb-8 font-light text-gray-100">Delicious and healthy snacking
+                                options for every mood.</p>
+                            <button class="btn btn-primary mx-auto"
+                                onclick="document.querySelector('#dryfruits-products').scrollIntoView({ behavior: 'smooth' })">Explore
+                                Snacks</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-slide absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=1200&h=600&fit=crop"
+                        class="w-full h-full object-cover brightness-75" alt="Cold Drinks">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white px-4 max-w-3xl">
+                            <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Refreshing Drinks</h2>
+                            <p class="text-lg md:text-xl mb-8 font-light text-gray-100">Cool down with our refreshing
+                                beverages.</p>
+                            <button class="btn btn-primary mx-auto"
+                                onclick="document.querySelector('#colddrinks-products').scrollIntoView({ behavior: 'smooth' })">Browse
+                                Beverages</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-slide absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1200&h=600&fit=crop"
+                        class="w-full h-full object-cover brightness-75" alt="Dry Fruits">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white px-4 max-w-3xl">
+                            <h2 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Premium Dry Fruits</h2>
+                            <p class="text-lg md:text-xl mb-8 font-light text-gray-100">Nutritious and delicious dry
+                                fruits for a healthy lifestyle.</p>
+                            <button class="btn btn-primary mx-auto"
+                                onclick="document.querySelector('#dryfruits-products').scrollIntoView({ behavior: 'smooth' })">Shop
+                                Dry Fruits</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Carousel Navigation -->
-            <button class="carousel-nav carousel-prev" onclick="changeSlide(-1)">
-                <i class="fas fa-chevron-left"></i>
+
+            <button
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white text-white hover:text-primary w-12 h-12 rounded-full backdrop-blur-md flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left text-xl"></i>
             </button>
-            <button class="carousel-nav carousel-next" onclick="changeSlide(1)">
-                <i class="fas fa-chevron-right"></i>
+            <button
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white text-white hover:text-primary w-12 h-12 rounded-full backdrop-blur-md flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+                onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right text-xl"></i>
             </button>
-            
-            <!-- Carousel Indicators -->
-            <div class="carousel-indicators">
-                <span class="indicator active" onclick="currentSlide(1)"></span>
-                <span class="indicator" onclick="currentSlide(2)"></span>
-                <span class="indicator" onclick="currentSlide(3)"></span>
+
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 carousel-indicators">
+                <span
+                    class="w-3 h-3 rounded-full bg-white/50 cursor-pointer hover:bg-white transition-all active indicator"
+                    onclick="currentSlide(1)"></span>
+                <span class="w-3 h-3 rounded-full bg-white/50 cursor-pointer hover:bg-white transition-all indicator"
+                    onclick="currentSlide(2)"></span>
+                <span class="w-3 h-3 rounded-full bg-white/50 cursor-pointer hover:bg-white transition-all indicator"
+                    onclick="currentSlide(3)"></span>
+                <span class="w-3 h-3 rounded-full bg-white/50 cursor-pointer hover:bg-white transition-all indicator"
+                    onclick="currentSlide(4)"></span>
+                <span class="w-3 h-3 rounded-full bg-white/50 cursor-pointer hover:bg-white transition-all indicator"
+                    onclick="currentSlide(5)"></span>
             </div>
         </div>
 
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>Your Trusted Grocery Store</h1>
-            <p>Fresh groceries, premium quality products, and unbeatable prices delivered to your doorstep.</p>
-            <button class="btn btn-primary" onclick="document.querySelector('#tea-products').scrollIntoView({ behavior: 'smooth' })">Shop Now <i class="fas fa-arrow-right"></i></button>
-        </section>
-
-        <!-- Tea Collection -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">🍵 Tea Collection</h2>
-                <div class="products-grid" id="tea-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Coffee Collection -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">☕ Coffee Collection</h2>
-                <div class="products-grid" id="coffee-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Chips & Snacks -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">🍟 Chips & Snacks</h2>
-                <div class="products-grid" id="chips-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Cold Drinks -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">🥤 Cold Drinks</h2>
-                <div class="products-grid" id="colddrinks-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Dry Fruits -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">🌰 Dry Fruits & Nuts</h2>
-                <div class="products-grid" id="dryfruits-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Salt Collection -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">🧂 Salt Collection</h2>
-                <div class="products-grid" id="salt-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Sugar Collection -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">🍬 Sugar Collection</h2>
-                <div class="products-grid" id="sugar-products">
-                    <!-- Products will be loaded here -->
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- User Profile Page -->
-    <div id="profile" class="page">
-        <div class="cart-container">
-            <div class="container">
-                <h2 class="section-title">My Profile</h2>
-                
-                <!-- Back Button -->
-                <button class="back-button" onclick="showPage('home')">
-                    <i class="fas fa-arrow-left"></i> Back to Home
-                </button>
-                
-                <div class="profile-container">
-                    <div class="profile-card">
-                        <div class="profile-header">
-                            <div class="profile-avatar-large">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="profile-info">
-                                <h2 id="profile-display-name">Loading...</h2>
-                                <p id="profile-display-email">Loading...</p>
-                                <span class="profile-badge">Premium Member</span>
-                            </div>
-                            <button class="btn btn-outline" onclick="editProfile()">
-                                <i class="fas fa-edit"></i> Edit Profile
-                            </button>
-                        </div>
-                        
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-number" id="total-orders">0</div>
-                                <div class="stat-label">Total Orders</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number" id="total-spent">₹0</div>
-                                <div class="stat-label">Total Spent</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">0</div>
-                                <div class="stat-label">Reviews</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number" id="cart-items-count">0</div>
-                                <div class="stat-label">Cart Items</div>
-                            </div>
-                        </div>
-
-                        <div class="profile-details">
-                            <div class="detail-section">
-                                <h3>Personal Information</h3>
-                                <div class="detail-grid">
-                                    <div class="detail-item">
-                                        <label>Full Name</label>
-                                        <span id="detail-name">Loading...</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <label>Display Name</label>
-                                        <span id="display-name">Loading...</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <label>Email</label>
-                                        <span id="detail-email">Loading...</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <label>User ID</label>
-                                        <span id="detail-id">Loading...</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <label>Member Since</label>
-                                        <span id="detail-member-since">2024</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="detail-section">
-                                <h3>Recent Activity</h3>
-                                <div class="activity-list">
-                                    <p style="color: white; text-align: center;" id="activity-message">Loading activity...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Orders Page -->
-    <div id="orders" class="page">
-        <div class="cart-container">
-            <div class="container">
-                <h2 class="section-title">My Orders</h2>
-                
-                <!-- Back Button -->
-                <button class="back-button" onclick="showPage('home')">
-                    <i class="fas fa-arrow-left"></i> Back to Home
-                </button>
-                
-                <div class="orders-container" id="orders-list">
-                    <div style="text-align: center; color: white; font-size: 1.2rem;">
-                        <p>Loading your orders...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cart Page -->
-    <div id="cart" class="page">
-        <div class="cart-container">
-            <div class="container">
-                <h2 class="section-title">Your Shopping Cart</h2>
-                
-                <!-- Back Button -->
-                <button class="back-button" onclick="showPage('home')">
-                    <i class="fas fa-arrow-left"></i> Back to Home
-                </button>
-                
-                <div id="cart-items">
-                    <!-- Cart items will be displayed here -->
-                </div>
-                <div class="cart-total">
-                    <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
-                    <button class="btn btn-primary" onclick="checkout()">
-                        <i class="fas fa-credit-card"></i> Proceed to Payment
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 text-center max-w-4xl">
+                <h1
+                    class="text-4xl md:text-5xl font-black text-gray-800 mb-6 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                    Your Trusted Grocery Store</h1>
+                <p class="text-xl text-gray-500 mb-10 leading-relaxed">Fresh groceries, premium quality products, and
+                    unbeatable prices delivered straight to your doorstep within minutes.</p>
+                <div class="flex justify-center gap-4">
+                    <button class="btn btn-primary"
+                        onclick="document.querySelector('#tea-products').scrollIntoView({ behavior: 'smooth' })">
+                        Shop Now <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn btn-outline border-gray-200 hover:border-primary"
+                        onclick="document.querySelector('#coffee-products').scrollIntoView({ behavior: 'smooth' })">
+                        Collections
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">🍵 Tea Collection</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="tea-products">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">☕ Coffee Collection</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="coffee-products">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">🍟 Chips & Snacks</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="chips-products">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">🥤 Cold Drinks</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="colddrinks-products">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">🌰 Dry Fruits & Nuts</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="dryfruits-products">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">🧂 Salt Collection</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="salt-products">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">🍬 Sugar Collection</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="sugar-products">
+
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- Sign In Modal -->
-    <div id="signin-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('signin')">&times;</button>
-            <div class="modal-header">
-                <h2>Welcome Back</h2>
-                <p>Sign in to your account</p>
+
+
+    <div id="signin-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
+        <div
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative transform scale-95 transition-all duration-300 translate-y-4">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-xl"
+                onclick="closeModal('signin')">&times;</button>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+                <p class="text-gray-500">Sign in to continue to Bity Kart</p>
             </div>
-            <form id="signin-form">
-                <div class="form-group">
-                    <label for="signin-email">Email</label>
-                    <input type="email" id="signin-email" required>
+            <form id="signin-form" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
+                    <input type="email" id="signin-email" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                 </div>
-                <div class="form-group">
-                    <label for="signin-password">Password</label>
-                    <input type="password" id="signin-password" required>
+                <div class="space-y-1">
+                    <label class="text-sm font-semibold text-gray-700 ml-1">Password</label>
+                    <input type="password" id="signin-password" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <button type="submit" class="btn btn-primary w-full justify-center mt-4">
                     <i class="fas fa-sign-in-alt"></i> Sign In
                 </button>
             </form>
-            <p style="text-align: center; margin-top: 1rem;">
-                Don't have an account? <a href="#" onclick="closeModal('signin'); showModal('signup');" style="color: var(--primary);">Sign up</a>
+            <p class="text-center mt-6 text-gray-500 text-sm">
+                Don't have an account? <a href="#" onclick="closeModal('signin'); showModal('signup');"
+                    class="text-primary font-bold hover:underline">Sign up</a>
             </p>
         </div>
     </div>
 
-    <!-- Sign Up Modal -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal('signup')">&times;</button>
-            <div class="modal-header">
-                <h2>Create Account</h2>
-                <p>Join Bity Kart today</p>
+    <div id="signup-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
+        <div
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative transform scale-95 transition-all duration-300 translate-y-4">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-xl"
+                onclick="closeModal('signup')">&times;</button>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
+                <p class="text-gray-500">Join Bity Kart for exclusive deals</p>
             </div>
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" required>
+            <form id="signup-form" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-sm font-semibold text-gray-700 ml-1">Full Name</label>
+                    <input type="text" id="signup-name" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                 </div>
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" required>
+                <div class="space-y-1">
+                    <label class="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
+                    <input type="email" id="signup-email" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                 </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" required>
+                <div class="space-y-1">
+                    <label class="text-sm font-semibold text-gray-700 ml-1">Password</label>
+                    <input type="password" id="signup-password" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-gray-50 focus:bg-white">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <button type="submit" class="btn btn-primary w-full justify-center mt-4">
                     <i class="fas fa-user-plus"></i> Create Account
                 </button>
             </form>
-            <p style="text-align: center; margin-top: 1rem;">
-                Already have an account? <a href="#" onclick="closeModal('signup'); showModal('signin');" style="color: var(--primary);">Sign in</a>
+            <p class="text-center mt-6 text-gray-500 text-sm">
+                Already have an account? <a href="#" onclick="closeModal('signup'); showModal('signin');"
+                    class="text-primary font-bold hover:underline">Sign in</a>
             </p>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Our Categories</h3>
-                <ul>
-                    <li><a href="#">Tea</a></li>
-                    <li><a href="#">Coffee</a></li>
-                    <li><a href="#">Snacks & Chips</a></li>
-                    <li><a href="#">Cold Drinks</a></li>
-                    <li><a href="#">Dry Fruits</a></li>
-                    <li><a href="#">Salt & Sugar</a></li>
+    <div class="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm opacity-0 invisible transition-all duration-300 mobile-menu-overlay"
+        id="mobile-menu-overlay"></div>
+    <div class="fixed inset-y-0 left-0 w-[280px] bg-white shadow-2xl z-[70] transform -translate-x-full transition-transform duration-300 flex flex-col h-full"
+        id="mobile-menu">
+        <div class="p-6 flex justify-between items-center border-b border-gray-100 bg-white">
+            <span
+                class="font-extrabold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">𝗕𝗶𝘁𝘆
+                𝗞𝗮𝗿𝘁</span>
+            <button class="text-gray-400 hover:text-red-500 text-xl transition-colors close-menu-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-6 flex flex-col gap-1 overflow-y-auto flex-1">
+            <a href="#" onclick="showPage('home')"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Home <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="#tea-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Tea <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="#coffee-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Coffee <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="#chips-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Snacks <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="#colddrinks-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Beverages <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+            <a href="#dryfruits-products"
+                class="text-lg font-medium text-gray-700 hover:text-primary py-3 border-b border-gray-50 flex items-center justify-between group">
+                Dry Fruits <i class="fas fa-chevron-right text-gray-300 text-xs group-hover:text-primary"></i>
+            </a>
+
+            <div id="mobile-user-menu" class="hidden mt-6 pt-6 border-t border-gray-100">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">My Account</p>
+                <a href="#" onclick="window.location.href='profile.html'"
+                    class="flex items-center gap-3 text-lg font-medium text-gray-700 hover:text-primary py-3 rounded-xl hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center"><i
+                            class="fas fa-user text-sm"></i></div>
+                    Profile
+                </a>
+                <a href="#" onclick="window.location.href='orders.html'"
+                    class="flex items-center gap-3 text-lg font-medium text-gray-700 hover:text-primary py-3 rounded-xl hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center"><i
+                            class="fas fa-shopping-bag text-sm"></i></div>
+                    My Orders
+                </a>
+                <a href="#" onclick="window.location.href='cart.html'"
+                    class="flex items-center gap-3 text-lg font-medium text-gray-700 hover:text-primary py-3 rounded-xl hover:bg-gray-50 px-2 -mx-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center"><i
+                            class="fas fa-shopping-cart text-sm"></i></div>
+                    My Cart
+                </a>
+                <a href="#" onclick="logout()"
+                    class="flex items-center gap-3 text-lg font-medium text-red-500 hover:text-red-600 py-3 rounded-xl hover:bg-red-50 px-2 -mx-2 transition-colors mt-2">
+                    <div class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center"><i
+                            class="fas fa-sign-out-alt text-sm"></i></div>
+                    Logout
+                </a>
+            </div>
+
+            <div id="mobile-auth-buttons" class="mt-auto pt-6 border-t border-gray-100 flex flex-col gap-3 pb-8">
+                <button
+                    class="w-full py-3 rounded-xl border border-gray-200 font-bold text-gray-700 hover:border-primary hover:text-primary transition-all"
+                    onclick="showModal('signin')">Sign In</button>
+                <button
+                    class="w-full py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark shadow-lg shadow-primary/30 transition-all"
+                    onclick="showModal('signup')">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white pt-20 pb-10">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            <div>
+                <h3
+                    class="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    Bity Kart</h3>
+                <p class="text-gray-400 mb-6">Your one-stop destination for premium teas, coffee, snacks, and more.
+                    Quality delivered to your doorstep.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"><i
+                            class="fab fa-twitter"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"><i
+                            class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-6 text-white">Categories</h3>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-primary transition-colors">Tea</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Coffee</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Snacks & Chips</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Cold Drinks</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Dry Fruits</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h3>Helpful Links</h3>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Refund Policy</a></li>
+            <div>
+                <h3 class="text-lg font-bold mb-6 text-white">Quick Links</h3>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-primary transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Contact</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Refund Policy</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h3>Popular Brands</h3>
-                <ul>
-                    <li>Tata Tea</li>
-                    <li>Nescafe</li>
-                    <li>Lay's</li>
-                    <li>Coca-Cola</li>
-                    <li>Nutraj</li>
-                    <li>+ Many More</li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li>Building 101</li>
-                    <li>Central Avenue</li>
-                    <li>Bhubaneswar, Odisha</li>
-                    <li>India - 751024</li>
-                    <li>Email: support@tea_library.com</li>
+            <div>
+                <h3 class="text-lg font-bold mb-6 text-white">Contact Info</h3>
+                <ul class="space-y-3 text-gray-400">
+                    <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt mt-1 text-primary"></i>
+                        <span>Building 101, Central Avenue<br>Bhubaneswar, Odisha<br>India - 751024</span>
+                    </li>
+                    <li class="flex items-center gap-3"><i class="fas fa-envelope text-primary"></i>
+                        <span>support@bitykart.com</span>
+                    </li>
+                    <li class="flex items-center gap-3"><i class="fas fa-phone text-primary"></i> <span>+91 123 456
+                            7890</span></li>
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025  𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁 | Your Trusted Online Grocery Store</p>
+        <div class="container mx-auto px-4 pt-8 border-t border-gray-800 text-center text-gray-500">
+            <p>&copy; 2025 𝗕𝗶𝘁𝘆 𝗞𝗮𝗿𝘁 | All rights reserved.</p>
         </div>
     </footer>
 
     <script src="js/api.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/main.js"></script>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             loadProducts();
             updateCartCount();
             updateAuthUI();
@@ -472,4 +566,5 @@
         });
     </script>
 </body>
+
 </html>
