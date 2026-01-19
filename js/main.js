@@ -246,6 +246,17 @@ function logout() {
 }
 
 function updateAuthUI() {
+    // Re-fetch current user to ensure we have the latest state
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+        currentUser = JSON.parse(storedUser);
+    } else {
+        currentUser = null;
+    }
+
+    // Debug log to help track auth state
+    console.log('Updating Auth UI. User:', currentUser ? currentUser.name : 'Guest');
+
     const authButtons = document.getElementById('auth-buttons');
     const userMenu = document.getElementById('user-menu');
     const userName = document.getElementById('user-name');
@@ -256,26 +267,52 @@ function updateAuthUI() {
 
     if (currentUser) {
         // Desktop
-        if (authButtons) authButtons.style.display = 'none';
-        if (userMenu) userMenu.style.display = 'block';
+        if (authButtons) {
+            authButtons.style.setProperty('display', 'none', 'important');
+            authButtons.classList.add('hidden');
+            authButtons.classList.remove('flex');
+        }
+        if (userMenu) {
+            userMenu.style.display = 'block';
+            userMenu.classList.remove('hidden');
+        }
         if (userName) {
             const firstName = getFirstName(currentUser.name);
             userName.textContent = `Hi, ${firstName}!`;
         }
 
         // Mobile
-        if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
-        if (mobileUserMenu) mobileUserMenu.classList.remove('hidden');
+        if (mobileAuthButtons) {
+            mobileAuthButtons.style.setProperty('display', 'none', 'important');
+            mobileAuthButtons.classList.add('hidden');
+            mobileAuthButtons.classList.remove('flex');
+        }
+        if (mobileUserMenu) {
+            mobileUserMenu.classList.remove('hidden');
+        }
 
         updateProfileInfo(currentUser);
     } else {
         // Desktop
-        if (authButtons) authButtons.style.display = 'flex';
-        if (userMenu) userMenu.style.display = 'none';
+        if (authButtons) {
+            authButtons.style.display = 'flex';
+            authButtons.classList.remove('hidden');
+            authButtons.classList.add('flex');
+        }
+        if (userMenu) {
+            userMenu.style.display = 'none';
+            userMenu.classList.add('hidden');
+        }
 
         // Mobile
-        if (mobileAuthButtons) mobileAuthButtons.style.display = 'flex';
-        if (mobileUserMenu) mobileUserMenu.classList.add('hidden');
+        if (mobileAuthButtons) {
+            mobileAuthButtons.style.display = 'flex';
+            mobileAuthButtons.classList.remove('hidden');
+            mobileAuthButtons.classList.add('flex');
+        }
+        if (mobileUserMenu) {
+            mobileUserMenu.classList.add('hidden');
+        }
     }
 }
 
